@@ -51,6 +51,7 @@ export const CreateUserForm = ({ handleCloseModal }) => {
       refetchOnWindowFocus: false,
     }
   );
+  console.log(emailExists);
   const checkEmail = useDebounce(() => refetch(), 500);
   const handleCreateUser = (e) => {
     e.preventDefault();

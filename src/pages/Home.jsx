@@ -2,26 +2,25 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./Home.css";
 import NavBar from "../components/NavBar";
 import CheckIcon from "@mui/icons-material/Check";
-// import CloseIcon from '@mui/icons-material/Close';
-// import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-// import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-// import { FaPoo } from 'react-icons/fa';
+import CloseIcon from '@mui/icons-material/Close';
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
+import {LoginModal} from "../components/login/LoginModal";
 
 export default function Home() {
   const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-  const iconDislike = ["❌", "👎🏽", "💩"];
+  const iconDislike = [<CloseIcon sx={{ color: "red", fontSize: "6rem"}}/>, "👎🏽", "💩"];
   const iconLike = [
-    <CheckIcon sx={{ color: "#48B117", fontSize: "7rem" }} />,
+    <CheckIcon sx={{ color: "#48B117", fontSize: "6rem"}} />,
     "👍🏼",
     "🔥",
   ];
+  
+  const [flip1, setFlip1] = useState(<CloseIcon sx={{ color: "red", fontSize: "6rem"}}/>);
+  const [flip2, setFlip2] = useState(<CheckIcon sx={{ color: "#48B117", fontSize: "6rem" }} />);
 
-  const [flip1, setFlip1] = useState("❌");
-  const [flip2, setFlip2] = useState(<CheckIcon sx={{ color: "#48B117", fontSize: "7rem" }} />);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const shuffle = useCallback(() => {
     let idx = 0;
@@ -43,10 +42,6 @@ export default function Home() {
 
   return (
     <>
-       <>
-      <Button onClick={handleOpenModal}>Open Modal</Button>
-      <LoginModal openModal={openModal} handleCloseModal={handleCloseModal} />
-    </>
       <NavBar />
       <Typography mt={10} variant="h3" align="center" sx={{ color: "black" }}>
         What will you decide?
@@ -61,12 +56,14 @@ export default function Home() {
       </Box>
       <Box align="center" mt={10}>
         <Button
+          onClick={handleOpenModal}
           variant="outlined"
           size="large"
           sx={{ color: "black", borderColor: "black" }}
         >
           Create an acount
         </Button>
+        <LoginModal openModal={openModal} handleCloseModal={handleCloseModal} />
       </Box>
     </>
   );
