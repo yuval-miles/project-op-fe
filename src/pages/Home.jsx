@@ -10,6 +10,9 @@ import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 
 export default function Home() {
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
   const iconDislike = ["❌", "👎🏽", "💩"];
   const iconLike = [
     <CheckIcon sx={{ color: "#48B117", fontSize: "7rem" }} />,
@@ -40,6 +43,10 @@ export default function Home() {
 
   return (
     <>
+       <>
+      <Button onClick={handleOpenModal}>Open Modal</Button>
+      <LoginModal openModal={openModal} handleCloseModal={handleCloseModal} />
+    </>
       <NavBar />
       <Typography mt={10} variant="h3" align="center" sx={{ color: "black" }}>
         What will you decide?
