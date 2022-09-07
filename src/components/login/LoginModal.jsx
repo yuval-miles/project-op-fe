@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Fade, Modal } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CreateUserForm, LoginForm } from ".";
 
 const style = {
@@ -14,11 +14,21 @@ const style = {
   p: 4,
 };
 
-export const LoginModal = ({ openModal, handleCloseModal }) => {
+export const LoginModal = ({
+  openModal,
+  handleCloseModal,
+  isCreateUser,
+  handleOpenSnackBar,
+  setIsCreateUser,
+}) => {
   const [showLogin, setShowLogin] = useState(true);
   const handleClick = () => {
     setShowLogin((state) => !state);
   };
+  useEffect(() => {
+    if (isCreateUser) setShowLogin(false);
+    else setShowLogin(true);
+  }, [isCreateUser]);
   return (
     <Modal
       open={openModal}
@@ -33,7 +43,10 @@ export const LoginModal = ({ openModal, handleCloseModal }) => {
             {showLogin ? (
               <LoginForm handleCloseModal={handleCloseModal} />
             ) : (
-              <CreateUserForm handleCloseModal={handleCloseModal} />
+              <CreateUserForm
+                handleOpenSnackBar={handleOpenSnackBar}
+                setIsCreateUser={setIsCreateUser}
+              />
             )}
             <Button
               variant="text"
