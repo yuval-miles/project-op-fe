@@ -11,7 +11,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-export const LoginForm = () => {
+export const LoginForm = ({ handleCloseModal }) => {
   const [input, setInput] = useState({
     password: "",
     email: "",
