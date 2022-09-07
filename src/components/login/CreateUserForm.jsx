@@ -15,14 +15,12 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useDebounce } from "../../hooks/useDebounce";
 import axiosClient from "../../utils/axiosClient";
 import PasswordFields from "./PasswordFields";
-import { useNavigate } from "react-router-dom";
 
 const emailValidator =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 const passwordValidator = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 export const CreateUserForm = ({ handleCloseModal }) => {
-  const navigate = useNavigate();
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -37,9 +35,7 @@ export const CreateUserForm = ({ handleCloseModal }) => {
   const { mutate: createUser, isSuccess } = useMutation(
     async (userData) => (await axiosClient.post("/auth/signup", userData)).data,
     {
-      onSuccess: () => {
-        navigate("/feed");
-      },
+      onSuccess: () => {},
     }
   );
   const { data: emailExists, refetch } = useQuery(
