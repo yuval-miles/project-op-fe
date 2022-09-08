@@ -17,6 +17,7 @@ export const LoginForm = ({ handleCloseModal }) => {
     email: "",
     showPassword: false,
     showError: false,
+    errorMessage: "",
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
