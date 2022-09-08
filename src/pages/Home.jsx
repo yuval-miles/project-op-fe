@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 import { LoginModal } from "../components/login/LoginModal";
+import { useTransition, animated, config } from "react-spring";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
@@ -17,6 +18,9 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const [isCreateUser, setIsCreateUser] = useState(false);
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const [currIdx, setCurrIdx] = useState(0);
+  const [nextIdx, setNextIdx] = useState(0);
   const iconDislike = [
     <CloseIcon sx={{ color: "red", fontSize: "6rem" }} />,
     "👎🏽",
@@ -27,13 +31,13 @@ export default function Home() {
     "👍🏼",
     "🔥",
   ];
-
-  const [flip1, setFlip1] = useState(
-    <CloseIcon sx={{ color: "red", fontSize: "6rem" }} />
-  );
-  const [flip2, setFlip2] = useState(
-    <CheckIcon sx={{ color: "#48B117", fontSize: "6rem" }} />
-  );
+  const transitions = useTransition(toggle, {
+    from: { opacity: 0, y: 1 },
+    enter: { opacity: 1, y: 0 },
+    leave: { opacity: 0, y: -1 },
+    reverse: toggle,
+    config: config.stiff,
+  });
 
   const handleOpenModal = (isCreateUser) => {
     setOpenModal(true);
@@ -45,14 +49,14 @@ export default function Home() {
 
   const shuffle = useCallback(() => {
     let idx = 0;
+    let toggle = true;
     return () => {
-      if (idx < 2) {
-        idx++;
-      } else {
-        idx = 0;
-      }
-      setFlip1(iconDislike[idx]);
-      setFlip2(iconLike[idx]);
+      if (idx < 2) idx++;
+      else idx = 0;
+      if (toggle) setCurrIdx(idx);
+      else setNextIdx(idx);
+      setToggle((state) => !state);
+      toggle = !toggle;
     };
   }, []);
 
@@ -69,10 +73,62 @@ export default function Home() {
       </Typography>
       <Box sx={{ display: "flex" }}>
         <Box className="icon" align="center">
-          {flip1}
+          {transitions(({ opacity, y }, item) =>
+            item ? (
+              <animated.div
+                style={{
+                  opacity: opacity.to({ range: [0.0, 1.0], output: [0, 1] }),
+                  transform: y
+                    .to({ range: [0.0, 1], output: [0, 200] })
+                    .to((y) => `translate3d(0,${y}px,0)`),
+                  position: "absolute",
+                }}
+              >
+                {iconDislike[currIdx]}
+              </animated.div>
+            ) : (
+              <animated.div
+                style={{
+                  opacity: opacity.to({ range: [1.0, 0.0], output: [1, 0] }),
+                  transform: y
+                    .to({ range: [0.0, 1], output: [0, 200] })
+                    .to((y) => `translate3d(0,${y}px,0)`),
+                  position: "absolute",
+                }}
+              >
+                {iconDislike[nextIdx]}
+              </animated.div>
+            )
+          )}
         </Box>
         <Box className="icon" align="center">
-          {flip2}
+          {transitions(({ opacity, y }, item) =>
+            item ? (
+              <animated.div
+                style={{
+                  opacity: opacity.to({ range: [0.0, 1.0], output: [0, 1] }),
+                  transform: y
+                    .to({ range: [0.0, 1], output: [0, 200] })
+                    .to((y) => `translate3d(0,${y}px,0)`),
+                  position: "absolute",
+                }}
+              >
+                {iconLike[currIdx]}
+              </animated.div>
+            ) : (
+              <animated.div
+                style={{
+                  opacity: opacity.to({ range: [1.0, 0.0], output: [1, 0] }),
+                  transform: y
+                    .to({ range: [0.0, 1], output: [0, 200] })
+                    .to((y) => `translate3d(0,${y}px,0)`),
+                  position: "absolute",
+                }}
+              >
+                {iconLike[nextIdx]}
+              </animated.div>
+            )
+          )}
         </Box>
       </Box>
       <Box align="center" mt={10}>
