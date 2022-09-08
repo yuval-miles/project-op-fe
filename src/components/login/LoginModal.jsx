@@ -19,7 +19,6 @@ export const LoginModal = ({
   handleCloseModal,
   isCreateUser,
   handleOpenSnackBar,
-  setIsCreateUser,
 }) => {
   const [showLogin, setShowLogin] = useState(true);
   const handleClick = () => {
@@ -45,7 +44,7 @@ export const LoginModal = ({
             ) : (
               <CreateUserForm
                 handleOpenSnackBar={handleOpenSnackBar}
-                setIsCreateUser={setIsCreateUser}
+                setShowLogin={setShowLogin}
               />
             )}
             <Button

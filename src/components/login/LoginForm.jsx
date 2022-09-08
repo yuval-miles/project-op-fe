@@ -31,11 +31,12 @@ export const LoginForm = ({ handleCloseModal }) => {
       },
       onError: (error) => {
         console.log(error);
-        setInput((state) => ({
-          ...state,
-          showError: true,
-          errorMessage: error.response.data.message,
-        }));
+        if (error.data)
+          setInput((state) => ({
+            ...state,
+            showError: true,
+            errorMessage: error.response.data.message,
+          }));
       },
     }
   );
