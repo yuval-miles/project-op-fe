@@ -10,8 +10,8 @@ body {
     overflow: hidden;
 }
 
-.icon {
-    margin-top: 5rem;
+.icon{
+    margin: 5rem 0rem;
     width: 50%;
     height: 50%;
     line-height: 10rem;

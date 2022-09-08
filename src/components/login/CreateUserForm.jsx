@@ -32,10 +32,13 @@ export const CreateUserForm = ({ handleOpenSnackBar, setIsCreateUser }) => {
     passwordsMatch: true,
     showError: false,
   });
-  const { mutate: createUser, isSuccess } = useMutation(
+  const { mutate: createUser } = useMutation(
     async (userData) => (await axiosClient.post("/auth/signup", userData)).data,
     {
-      onSuccess: () => {},
+      onSuccess: () => {
+        handleOpenSnackBar(true);
+        setIsCreateUser(false);
+      },
     }
   );
   const { data: emailExists, refetch } = useQuery(
@@ -45,10 +48,7 @@ export const CreateUserForm = ({ handleOpenSnackBar, setIsCreateUser }) => {
     {
       enabled: false,
       refetchOnWindowFocus: false,
-      onSuccess: () => {
-        handleOpenSnackBar(true);
-        setIsCreateUser(false);
-      },
+    
     }
   );
   const checkEmail = useDebounce(() => refetch(), 500);
