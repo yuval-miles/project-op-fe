@@ -31,7 +31,7 @@ export const LoginForm = ({ handleCloseModal }) => {
       },
       onError: (error) => {
         console.log(error);
-        if (error.data)
+        if (error.response.data)
           setInput((state) => ({
             ...state,
             showError: true,
