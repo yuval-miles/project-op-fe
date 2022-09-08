@@ -10,8 +10,12 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import axiosClient from "../../utils/axiosClient";
 
 export const LoginForm = ({ handleCloseModal }) => {
+  const navigate = useNavigate();
   const [input, setInput] = useState({
     password: "",
     email: "",
@@ -19,10 +23,29 @@ export const LoginForm = ({ handleCloseModal }) => {
     showError: false,
     errorMessage: "",
   });
+  const { mutate: loginUser } = useMutation(
+    async (logInfo) => (await axiosClient.post("/auth/signin", logInfo)).data,
+    {
+      onSuccess: () => {
+        navigate("/feed");
+      },
+      onError: (error) => {
+        console.log(error);
+        setInput((state) => ({
+          ...state,
+          showError: true,
+          errorMessage: error.response.data.message,
+        }));
+      },
+    }
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //TODO: Login logic
+
+    loginUser({ email: input.email, password: input.password });
   };
+
   const handleChange = (field) => (e) => {
     setInput({
       ...input,
@@ -75,7 +98,7 @@ export const LoginForm = ({ handleCloseModal }) => {
           onChange={handleChange("password")}
         ></TextField>
         <Collapse in={input.showError}>
-          <Alert severity="error">Email or password is incorrect</Alert>
+          <Alert severity="error">{input.errorMessage}</Alert>
         </Collapse>
         <Button type="submit" variant="contained">
           Login

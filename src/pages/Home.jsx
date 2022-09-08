@@ -71,22 +71,28 @@ export default function Home() {
       <Typography mt={10} variant="h3" align="center" sx={{ color: "black" }}>
         What will you decide?
       </Typography>
-      <Box sx={{ display: "flex" }}>
-        <Box className="icon" align="center">
+      <Box sx={{ display: "flex"}}>
+       
+      <Box className="icon">
+        <Box sx={{display: "flex", justifyContent:"center"}}>
           {transitions(({ opacity, y }, item) =>
             item ? (
+              
               <animated.div
                 style={{
                   opacity: opacity.to({ range: [0.0, 1.0], output: [0, 1] }),
                   transform: y
                     .to({ range: [0.0, 1], output: [0, 200] })
                     .to((y) => `translate3d(0,${y}px,0)`),
-                  position: "absolute",
+                   position: "absolute",
                 }}
               >
                 {iconDislike[currIdx]}
               </animated.div>
+              
+            
             ) : (
+              
               <animated.div
                 style={{
                   opacity: opacity.to({ range: [1.0, 0.0], output: [1, 0] }),
@@ -98,24 +104,30 @@ export default function Home() {
               >
                 {iconDislike[nextIdx]}
               </animated.div>
+              
             )
           )}
         </Box>
-        <Box className="icon" align="center">
+        </Box>
+        <Box className="icon">
+        <Box sx={{display: "flex", justifyContent:"center"}}>
           {transitions(({ opacity, y }, item) =>
             item ? (
+              
               <animated.div
                 style={{
                   opacity: opacity.to({ range: [0.0, 1.0], output: [0, 1] }),
                   transform: y
                     .to({ range: [0.0, 1], output: [0, 200] })
                     .to((y) => `translate3d(0,${y}px,0)`),
-                  position: "absolute",
+                   position: "absolute",
                 }}
               >
                 {iconLike[currIdx]}
               </animated.div>
+              
             ) : (
+              
               <animated.div
                 style={{
                   opacity: opacity.to({ range: [1.0, 0.0], output: [1, 0] }),
@@ -127,16 +139,20 @@ export default function Home() {
               >
                 {iconLike[nextIdx]}
               </animated.div>
+            
+              
             )
           )}
-        </Box>
+          </Box>
+          </Box>
+       
       </Box>
       <Box align="center" mt={10}>
         <Button
           onClick={() => handleOpenModal(true)}
           variant="outlined"
           size="large"
-          sx={{ color: "black", borderColor: "black" }}
+          sx={{ color: "black", borderColor: "black", mt:"5rem" }}
         >
           Create an account
         </Button>
