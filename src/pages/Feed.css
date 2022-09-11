@@ -1,14 +1,4 @@
-* {
-  box-sizing: border-box;
-}
 
-.cardBox {
-  margin-top: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.cardDisplay {
-  background-color: lightgray;
-}
+textarea:focus{
+    outline: none;
+  }
