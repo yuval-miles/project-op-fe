@@ -2,10 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../utils/axiosClient";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useUserData } from "../store/useUserData";
 
 export const useAuth = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const setUserData = useUserData((state) => state.setUserData);
   const [errorAlert, setErrorAlert] = useState({ show: false, message: "" });
   const { isLoading: authLoading, data: token } = useQuery(
     ["auth"],
@@ -14,6 +16,7 @@ export const useAuth = () => {
       cacheTime: 0,
       retry: false,
       onSuccess: (data) => {
+        setUserData(data);
         if (!data) navigate("/");
         else if (location.pathname === "/") navigate("/feed");
       },
