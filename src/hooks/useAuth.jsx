@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
   const navigate = useNavigate();
-  const { isLoading } = useQuery(
+  const { isLoading, data: userData } = useQuery(
     ["auth"],
     async () => (await axiosClient.get("/auth")).data,
     {
@@ -14,6 +14,11 @@ export const useAuth = () => {
         if (!data) navigate("/");
       },
     }
+   
   );
-  return { isLoading };
+  return { isLoading,userData };
 };
+
+
+
+

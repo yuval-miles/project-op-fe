@@ -27,6 +27,7 @@ export const LoginForm = ({ handleCloseModal }) => {
     async (logInfo) => (await axiosClient.post("/auth/signin", logInfo)).data,
     {
       onSuccess: () => {
+        console.log("test");
         navigate("/feed");
       },
       onError: (error) => {
@@ -39,8 +40,8 @@ export const LoginForm = ({ handleCloseModal }) => {
           }));
       },
     }
+    
   );
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
