@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import CreatePostForm from "../components/posts/CreatePostForm";
 import PostsList from "../components/posts/PostsList";
@@ -10,15 +9,14 @@ import { useAuth } from "../hooks/useAuth";
 
 const Feed = () => {
   const [postsList, setPostsList] = useState([]);
-  const { isLoading } = useAuth();
+  const { logout } = useAuth();
   const {} = useQuery(
     ["posts"],
     async () => (
-      await axiosClient.get("/posts/getAllPosts")).data,
+      await axiosClient.get("/posts")).data,
       {
         onSuccess: (data) => {
           setPostsList(data.response);
-          console.log('test');
         },
         refetchOnWindowFocus:false
         // refetchInterval: 5000,
@@ -27,16 +25,6 @@ const Feed = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "end", mx: "2rem" }}>
-        <Button
-          align="center"
-          variant="outlined"
-          size="large"
-          sx={{ color: "black", borderColor: "black" }}
-        >
-          <AddIcon sx={{ mr: "0.3rem" }} /> Add a Post
-        </Button>
-      </Box>
       <CreatePostForm />
       <PostsList postsList={postsList} />
     </>

@@ -11,12 +11,12 @@ import NotInterestedIcon from '@mui/icons-material/NotInterested';
 
 export default function PostsList(props) {
   const { postsList } = props;
-  const [seeComments, setSeeComments] = useState(-1);
+  const [seeComments, setSeeComments] = useState(false);
 
    const handleClick = i => {
-    setSeeComments(seeComments === i ? -1 : i);
+    setSeeComments(seeComments === i ? false : i);
   }
-console.log(postsList);
+
   return (
     <>
       <Box
