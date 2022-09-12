@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useState } from "react";
 import { useSocket } from "../../store/useSocket";
 import Card from "@mui/material/Card";
@@ -10,11 +10,15 @@ import AddCommentForm from "./AddCommentForm";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useUserData } from "../../store/useUserData";
+import { useEffect } from "react";
 
-const Post = ({ text, postId }) => {
+const Post = ({ text, postId, initLikes, initDislikes }) => {
   const [showComments, setShowComments] = useState(false);
+  const [likes, setLikes] = useState(initLikes.length);
+  const [disLikes, setDisLikes] = useState(initDislikes.length);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
+  console.log(likes);
   const handleLike = () => {
     if (userData)
       socket.emit("likeEvent", { userId: userData.id, type: "like", postId });
@@ -23,10 +27,33 @@ const Post = ({ text, postId }) => {
     if (userData)
       socket.emit("likeEvent", {
         userId: userData.id,
-        type: "dislike",
+        type: "disLike",
         postId,
       });
   };
+  useEffect(() => {
+    socket.on(postId, ({ action }) => {
+      switch (action) {
+        case "removeLike":
+          setLikes((state) => state - 1);
+          break;
+        case "addLike":
+          setLikes((state) => state + 1);
+          break;
+        case "removeDislike":
+          setDisLikes((state) => state - 1);
+          break;
+        case "addDislike":
+          setDisLikes((state) => state + 1);
+          break;
+        default:
+          break;
+      }
+    });
+    return () => {
+      socket.off(postId);
+    };
+  }, []);
   return (
     <>
       <Box
@@ -52,12 +79,18 @@ const Post = ({ text, postId }) => {
               justifyContent: "space-between",
             }}
           >
-            <Button onClick={handleLike}>
-              <FavoriteBorderIcon sx={{ color: "green" }} />
-            </Button>
-            <Button onClick={handleDisLike}>
-              <NotInterestedIcon sx={{ color: "red" }} />
-            </Button>
+            <Stack direction={"row"} gap={2}>
+              <Button onClick={handleLike}>
+                <FavoriteBorderIcon sx={{ color: "green" }} />
+              </Button>
+              <Typography>{likes}</Typography>
+            </Stack>
+            <Stack direction={"row"} gap={2}>
+              <Button onClick={handleDisLike}>
+                <NotInterestedIcon sx={{ color: "red" }} />
+              </Button>
+              <Typography>{disLikes}</Typography>
+            </Stack>
           </Box>
 
           <Button

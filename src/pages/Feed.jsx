@@ -12,23 +12,21 @@ const Feed = () => {
   const { logout } = useAuth();
   const {} = useQuery(
     ["posts"],
-    async () => (
-      await axiosClient.get("/posts")).data,
-      {
-        onSuccess: (data) => {
-          setPostsList(data.response);
-        },
-        refetchOnWindowFocus:false
-        // refetchInterval: 5000,
-      }
+    async () => (await axiosClient.get("/posts")).data,
+    {
+      onSuccess: (data) => {
+        setPostsList(data.response);
+      },
+      refetchOnWindowFocus: false,
+      // refetchInterval: 5000,
+    }
   );
-
   return (
     <>
       <CreatePostForm />
       <PostsList postsList={postsList} />
     </>
   );
-}; 
+};
 
 export default Feed;

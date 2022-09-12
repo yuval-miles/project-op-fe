@@ -15,7 +15,13 @@ export default function PostsList({ postsList }) {
         }}
       >
         {postsList.map((post) => (
-          <Post key={post.id} text={post.text} postId={post.id} />
+          <Post
+            key={post.id}
+            text={post.text}
+            postId={post.id}
+            initLikes={post.likes}
+            initDislikes={post.dislikes}
+          />
         ))}
       </Box>
     </>
