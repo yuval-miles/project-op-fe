@@ -4,7 +4,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 
-const PasswordFields = ({ input, setInput, handleChange }) => {
+const PasswordFields = ({ input, setInput, handleChange}) => {
   return (
     <>
       <Stack>

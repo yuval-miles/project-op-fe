@@ -9,20 +9,20 @@ import { useAuth } from "../../hooks/useAuth";
 
 export default function CreatePostForm() {
 
-  const { userData } = useAuth();
+  const { token } = useAuth();
   
   const [post, setPost] = useState({ text: "", userId: "" });
 
   const { mutate: createPost } = useMutation(
     async (postData) =>
       (await axiosClient.post("/posts/createPost", postData)).data
-  );
-
+  )
+ 
   const handlePost = (e) => {
     e.preventDefault();
     createPost({
       text: post.text,
-      userId: userData.id,
+      userId: token.id,
     });
   };
 
