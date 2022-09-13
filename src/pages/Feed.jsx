@@ -10,6 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 const Feed = () => {
   const [postsList, setPostsList] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
+  const [myDislikes, setMyDislikes] = useState([]);
   const { logout } = useAuth();
   const {} = useQuery(
     ["posts"],
@@ -18,15 +19,16 @@ const Feed = () => {
       onSuccess: (data) => {
         setPostsList(data.response.posts);
         setMyLikes(data.response.myLikesObj);
+        setMyDislikes(data.response.myDislikesObj);
       },
       refetchOnWindowFocus: false,
       // refetchInterval: 5000,
-    }
+    },
   );
   return (
     <>
       <CreatePostForm />
-      <PostsList postsList={postsList} myLikes={myLikes} />
+      <PostsList postsList={postsList} myLikes={myLikes} myDislikes={myDislikes}/>
     </>
   );
 };

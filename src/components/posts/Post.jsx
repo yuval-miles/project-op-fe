@@ -19,7 +19,9 @@ const Post = ({ text, postId, initLikes, initDislikes, liked }) => {
     num: initDislikes.length,
     enabled: true,
   });
+  
   const [isLiked, setIsLiked] = useState(liked);
+  const [isDisliked, setIsDisliked] = useState(liked);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
 
