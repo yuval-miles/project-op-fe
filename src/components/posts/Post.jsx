@@ -12,18 +12,24 @@ import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useUserData } from "../../store/useUserData";
 import { useEffect } from "react";
 
-const Post = ({ text, postId, initLikes, initDislikes }) => {
+const Post = ({ text, postId, initLikes, initDislikes, liked }) => {
   const [showComments, setShowComments] = useState(false);
-  const [likes, setLikes] = useState(initLikes.length);
-  const [disLikes, setDisLikes] = useState(initDislikes.length);
+  const [likes, setLikes] = useState({ num: initLikes.length, enabled: true });
+  const [disLikes, setDisLikes] = useState({
+    num: initDislikes.length,
+    enabled: true,
+  });
+  const [isLiked, setIsLiked] = useState(liked);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
 
   const handleLike = () => {
+    setLikes((state) => ({ ...state, enabled: false }));
     if (userData)
       socket.emit("likeEvent", { userId: userData.id, type: "like", postId });
   };
   const handleDisLike = () => {
+    setDisLikes((state) => ({ ...state, enabled: false }));
     if (userData)
       socket.emit("likeEvent", {
         userId: userData.id,
@@ -33,28 +39,26 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
   };
   useEffect(() => {
     socket.on(postId, ({ action }) => {
-      console.log(action);
       switch (action) {
         case "removeLike":
-          setLikes((state) => state - 1);
+          setLikes((state) => ({ enabled: true, num: state.num - 1 }));
           break;
         case "addLike":
-          setLikes((state) => state + 1);
+          setLikes((state) => ({ enabled: true, num: state.num + 1 }));
           break;
         case "removeDislike":
-          setDisLikes((state) => state - 1);
+          setDisLikes((state) => ({ enabled: true, num: state.num - 1 }));
           break;
         case "addDislike":
-          setDisLikes((state) => state + 1);
+          setDisLikes((state) => ({ enabled: true, num: state.num + 1 }));
           break;
         case "addLike&&removeDislike":
-          setLikes((state) => state + 1);
-          setDisLikes((state) => state - 1);
+          setLikes((state) => ({ enabled: true, num: state.num + 1 }));
+          setDisLikes((state) => ({ enabled: true, num: state.num - 1 }));
           break;
         case "addDislike&&removeLike":
-          setDisLikes((state) => state + 1);
-          setLikes((state) => state - 1);
-
+          setLikes((state) => ({ enabled: true, num: state.num - 1 }));
+          setDisLikes((state) => ({ enabled: true, num: state.num + 1 }));
           break;
         default:
           break;
@@ -90,16 +94,16 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
             }}
           >
             <Stack direction={"row"} gap={2}>
-              <Button onClick={handleLike}>
+              <Button onClick={handleLike} disabled={!likes.enabled}>
                 <FavoriteBorderIcon sx={{ color: "green" }} />
               </Button>
-              <Typography>{likes}</Typography>
+              <Typography>{likes.num}</Typography>
             </Stack>
             <Stack direction={"row"} gap={2}>
-              <Button onClick={handleDisLike}>
+              <Button onClick={handleDisLike} disabled={!disLikes.enabled}>
                 <NotInterestedIcon sx={{ color: "red" }} />
               </Button>
-              <Typography>{disLikes}</Typography>
+              <Typography>{disLikes.num}</Typography>
             </Stack>
           </Box>
 

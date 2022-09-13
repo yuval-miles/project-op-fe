@@ -9,13 +9,15 @@ import { useAuth } from "../hooks/useAuth";
 
 const Feed = () => {
   const [postsList, setPostsList] = useState([]);
+  const [myLikes, setMyLikes] = useState([]);
   const { logout } = useAuth();
   const {} = useQuery(
     ["posts"],
     async () => (await axiosClient.get("/posts")).data,
     {
       onSuccess: (data) => {
-        setPostsList(data.response);
+        setPostsList(data.response.posts);
+        setMyLikes(data.response.myLikesObj);
       },
       refetchOnWindowFocus: false,
       // refetchInterval: 5000,
@@ -24,7 +26,7 @@ const Feed = () => {
   return (
     <>
       <CreatePostForm />
-      <PostsList postsList={postsList} />
+      <PostsList postsList={postsList} myLikes={myLikes} />
     </>
   );
 };
