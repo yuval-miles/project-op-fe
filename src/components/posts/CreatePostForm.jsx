@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import "../../pages/Feed.css"
+import "../../pages/Feed.css";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { useMutation } from "@tanstack/react-query";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import axiosClient from "../../utils/axiosClient";
 import { Box } from "@mui/system";
 import { useAuth } from "../../hooks/useAuth";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 export default function CreatePostForm() {
-
   const { token } = useAuth();
-  
+
   const [post, setPost] = useState({ text: "", userId: "" });
 
   const { mutate: createPost } = useMutation(
     async (postData) =>
       (await axiosClient.post("/posts/createPost", postData)).data
-  )
- 
+  );
+
   const handlePost = (e) => {
     e.preventDefault();
     createPost({
@@ -26,25 +26,59 @@ export default function CreatePostForm() {
     });
   };
 
-  
-
   return (
-
-
-    <Box component="form" onSubmit={handlePost} sx={{width:"50%",borderRadius:"5px", mx:"auto",p:"1rem",mt:"2rem",bgcolor:"white", display:"flex" ,flexDirection: "column"}}>
+    <Box
+      component="form"
+      onSubmit={handlePost}
+      sx={{
+        width: "50%",
+        borderRadius: "5px",
+        mx: "auto",
+        p: "1rem",
+        mt: "2rem",
+        display: "flex",
+        flexDirection: "column",
+        border: "solid red 1px"
+      }}
+    >
       <TextareaAutosize
         aria-label="minimum height"
         minRows={3}
         placeholder="Ask something..."
-        style={{ width: "100%", border: "none",resize: "none"}}
+        style={{
+          padding: "1rem",
+          width: "100%",
+          resize: "none",
+          border: "2px dashed black",
+          borderRadius: "10px",
+        }}
         onChange={(e) => setPost({ ...post, text: e.target.value })}
       />
-      <Button variant="contained" type="submit" sx={{width:"10%", ml:"auto"}}>
+      <Box
+        sx={{
+          padding: "1rem",
+          my: "2rem",
+          width: "100%",
+          resize: "none",
+          border: "2px dashed black",
+          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography>Add a Photo to your question?</Typography>
+        <input hidden accept="image/*" type="file" />
+        <PhotoCamera />
+      </Box>
+      <Button
+        variant="contained"
+        type="submit"
+        sx={{ width: "10%", ml: "auto" }}
+      >
         Add
       </Button>
     </Box>
-   
- 
- 
   );
 }

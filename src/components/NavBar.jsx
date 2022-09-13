@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 
+
 export default function NavBar({ handleOpenModal }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -18,7 +19,7 @@ export default function NavBar({ handleOpenModal }) {
        </Typography> */}
           <Button
             onClick={() => handleOpenModal(false)}
-            sx={{ boxShadow: "0px 0px 0px 0px", color: "black", ml: "auto" }}
+            sx={{ color: "black", ml: "auto", border:"1px solid black", px:"1rem" }}
           >
             Login
           </Button>

@@ -18,7 +18,6 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
   const [disLikes, setDisLikes] = useState(initDislikes.length);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
-  console.log(likes);
   const handleLike = () => {
     if (userData)
       socket.emit("likeEvent", { userId: userData.id, type: "like", postId });

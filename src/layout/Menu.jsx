@@ -9,8 +9,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import LogoutIcon from "@mui/icons-material/Logout";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import FolderIcon from '@mui/icons-material/Folder';
 import { useAuth } from "../hooks/useAuth";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +51,7 @@ export default function Menu() {
         <ListItem>
           <ListItemButton onClick={() => navigate("/feed")}>
             <ListItemIcon>
-              <SettingsIcon />
+              <DynamicFeedIcon />
             </ListItemIcon>
             <ListItemText> Feed</ListItemText>
           </ListItemButton>
@@ -58,7 +59,7 @@ export default function Menu() {
         <ListItem>
           <ListItemButton onClick={() => navigate("/myposts")}>
             <ListItemIcon>
-              <SettingsIcon />
+              <FolderIcon />
             </ListItemIcon>
             <ListItemText>My posts</ListItemText>
           </ListItemButton>
