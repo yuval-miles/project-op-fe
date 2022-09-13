@@ -5,7 +5,7 @@ import Menu from "./Menu";
 const Layout = () => {
   return (
     <>
-      <Menu />
+      <Menu/>
       <Outlet />
     </>
   );

@@ -13,7 +13,7 @@ export default function AddCommentForm() {
         placeholder="comment..."
         style={{ width: "100%", border: "none",resize: "none"}}
       />
-      <Button variant="contained" type="submit" sx={{width:"10%", ml:"auto"}}>
+      <Button className="btn" variant="outlined" type="submit" sx={{width:"10%", ml:"auto", color:"black", borderColor:"black"}}>
         Add
       </Button>
       </Box>

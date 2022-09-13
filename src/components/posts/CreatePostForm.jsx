@@ -30,15 +30,15 @@ export default function CreatePostForm() {
     <Box
       component="form"
       onSubmit={handlePost}
+      className="postForm"
       sx={{
         width: "50%",
-        borderRadius: "5px",
+        borderRadius: "10px",
         mx: "auto",
         p: "1rem",
         mt: "2rem",
         display: "flex",
         flexDirection: "column",
-        border: "solid red 1px"
       }}
     >
       <TextareaAutosize
@@ -57,7 +57,8 @@ export default function CreatePostForm() {
       <Box
         sx={{
           padding: "1rem",
-          my: "2rem",
+          mb: "1.5rem",
+          mt:"1rem",
           width: "100%",
           resize: "none",
           border: "2px dashed black",
@@ -73,9 +74,10 @@ export default function CreatePostForm() {
         <PhotoCamera />
       </Box>
       <Button
-        variant="contained"
+      className="btn"
+        variant="outlined"
         type="submit"
-        sx={{ width: "10%", ml: "auto" }}
+        sx={{ width: "10%", ml: "auto", color: "black", borderColor:"black"}}
       >
         Add
       </Button>

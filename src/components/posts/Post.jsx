@@ -63,7 +63,7 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
           width: "100%",
         }}
       >
-        <Card sx={{ width: "50%" }}>
+        <Card sx={{ width: "50%", p:"1rem" }}>
           <CardContent>
             <Typography align="center" variant="h5" component="div">
               {text}
@@ -93,11 +93,11 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
           </Box>
 
           <Button
-            sx={{ display: "flex", ml: "auto" }}
+            sx={{ display: "flex", ml: "auto" , border:"none"}}
             onClick={() => setShowComments((state) => !state)}
             aria-expanded={showComments}
           >
-            <CommentIcon />
+            <CommentIcon className="menuIcon" sx={{color:"black"}}/>
           </Button>
         </Card>
 
