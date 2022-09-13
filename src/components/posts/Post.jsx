@@ -18,6 +18,7 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
   const [disLikes, setDisLikes] = useState(initDislikes.length);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
+
   const handleLike = () => {
     if (userData)
       socket.emit("likeEvent", { userId: userData.id, type: "like", postId });
@@ -32,6 +33,7 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
   };
   useEffect(() => {
     socket.on(postId, ({ action }) => {
+      console.log(action);
       switch (action) {
         case "removeLike":
           setLikes((state) => state - 1);
@@ -44,6 +46,15 @@ const Post = ({ text, postId, initLikes, initDislikes }) => {
           break;
         case "addDislike":
           setDisLikes((state) => state + 1);
+          break;
+        case "addLike&&removeDislike":
+          setLikes((state) => state + 1);
+          setDisLikes((state) => state - 1);
+          break;
+        case "addDislike&&removeLike":
+          setDisLikes((state) => state + 1);
+          setLikes((state) => state - 1);
+
           break;
         default:
           break;
