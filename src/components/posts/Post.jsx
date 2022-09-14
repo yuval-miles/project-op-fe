@@ -103,22 +103,24 @@ const Post = ({
             p: "1rem",
             borderRadius: "10px",
             bgcolor: "rgba(242,99,170, 0.1)",
+            width:"50%",
           }}
         >
-          <Typography
+          {picture ? <Typography
             align="center"
             variant="h5"
             component="div"
             sx={{ mb: "1rem" }}
           >
             {text}
-          </Typography>
+          </Typography> : "" }
+          
           <Box
             sx={{
               mb: "1rem",
               display: "flex",
               flexDirection: "row",
-              justifyContent: "center",
+              justifyContent: "space-between",
               alignItems: "center",
             }}
           >
@@ -141,10 +143,18 @@ const Post = ({
               <Typography>{likes.num}</Typography>
             </Box>
             <Box>
-              <Box className="photo" sx={{ mx: "1rem" }}>
+              {picture?<Box className="photo">
                 {" "}
                 <img src={picture} />
-              </Box>
+              </Box> : <Typography
+            align="center"
+            variant="h5"
+            component="div"
+            sx={{ mb: "1rem" }}
+          >
+            {text}
+          </Typography>}
+              
             </Box>
             <Box
               sx={{
@@ -171,13 +181,13 @@ const Post = ({
             onClick={() => setShowComments((state) => !state)}
             aria-expanded={showComments}
           >
-            <CommentIcon sx={{ color: "blueviolet" }} />
+            <CommentIcon sx={{ color: "blueviolet", fontSize:"2rem" }} />
           </Button>
         </Card>
 
-        <Collapse in={showComments} orientation="horizontal" unmountOnExit>
-          <Card sx={{ height: "100%" }}>
-            <CardContent sx={{ width: "100%", borderRadius: "5px" }}>
+        <Collapse in={showComments} sx={{border:"3px solid blue"}} orientation="horizontal" unmountOnExit>
+          <Card sx={{height:"100%"}}>
+            <CardContent sx={{ height:"100%", borderRadius: "5px"}}>
               <AddCommentForm
                 userId={userData.id}
                 postId={postId}

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../utils/axiosClient";
 import { useAuth } from "../hooks/useAuth";
 import CreatePostModal from "../components/posts/CreatePostModal";
+import AddIcon from '@mui/icons-material/Add';
 
 const Feed = () => {
   const [openPostModal, setOpenPostModal] = useState(false);
@@ -35,15 +36,18 @@ const Feed = () => {
   const handleClosePostModal = () => setOpenPostModal(false);
   return (
     <>
+    <Box sx={{display:"flex", justifyContent:"flex-end", alignItems:"center", mr:"2rem"}}>
       <Button
         className="btn"
         onClick={() => handleOpenPostModal(true)}
         variant="outlined"
         size="large"
-        sx={{ color: "black", borderColor: "black", mt: "5rem" }}
+        sx={{ color: "black", borderColor: "black"}}
       >
-        Add a post
+        <AddIcon sx={{mr:"0.5rem"}}/>
+        Add post
       </Button>
+    </Box>
       <CreatePostModal
         openPostModal={openPostModal}
         handleClosePostModal={handleClosePostModal}

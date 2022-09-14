@@ -57,6 +57,7 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
         userId: token.id,
       });
       refetchPosts();
+      handleClosePostModal();
     }
   };
 
@@ -70,11 +71,9 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
       onSubmit={handlePost}
       className="postForm"
       sx={{
-        width: "40%",
+        width: "100%",
         borderRadius: "10px",
-        mx: "auto",
         p: "1rem",
-        mt: "2rem",
         display: "flex",
         flexDirection: "column",
       }}
@@ -96,7 +95,6 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
         <>
           <Box
             sx={{
-              padding: "1rem",
               my: "2rem",
               width: "100%",
               resize: "none",
@@ -108,9 +106,14 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
               alignItems: "center",
             }}
           >
-            <Button component="label">
-              <Typography>Add a Photo to your question?</Typography>
-              <PhotoCamera />
+            <Button
+              component="label"
+              sx={{ display: "flex", flexDirection: "column", p: "6rem" }}
+            >
+              <Typography align="center">
+                Add a Photo to your question?
+              </Typography>
+              <PhotoCamera sx={{ fontSize: "2rem" }} />
               <input
                 type="file"
                 hidden

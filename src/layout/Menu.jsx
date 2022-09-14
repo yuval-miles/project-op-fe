@@ -100,7 +100,7 @@ export default function Menu() {
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)} sx={{ color: "black" }}>
-            <MenuIcon className="menuIcon"/>{" "}
+            <MenuIcon sx={{fontSize:"2.5rem"}} className="menuIcon"/>{" "}
           </Button>
           <Drawer
             anchor={anchor}
