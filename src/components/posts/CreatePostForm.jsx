@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "../../pages/Feed.css";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { useMutation } from "@tanstack/react-query";
 import { Button, Typography, Collapse, LinearProgress } from "@mui/material";
-import axiosClient from "../../utils/axiosClient";
 import { Box } from "@mui/system";
 import { useAuth } from "../../hooks/useAuth";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
@@ -11,9 +9,9 @@ import { useS3Upload } from "../../hooks/useS3Upload";
 import { v4 as uuid } from "uuid";
 import { useEffect } from "react";
 
-export default function CreatePostForm() {
+export default function CreatePostForm({ refetchPosts }) {
   const [postId, setPostId] = useState("");
-  const [currImg, setCurrImg] = useState();
+  const [currImg, setCurrImg] = useState("");
   const { token } = useAuth();
 
   const [post, setPost] = useState({ text: "" });
@@ -29,16 +27,14 @@ export default function CreatePostForm() {
         ...data.post,
         userId: token.id,
         id: data.postId,
-        picture: uploadUrl.response,
+        picture: uploadUrl?.response.split("?")[0],
       };
     },
     "Post uploaded!",
-    null
-  );
-
-  const { mutate: createPost } = useMutation(
-    async (postData) =>
-      (await axiosClient.post("/posts/createPost", postData)).data
+    () => {
+      refetchPosts();
+      setCurrImg("");
+    }
   );
 
   const handlePost = (e) => {
