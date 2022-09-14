@@ -88,7 +88,6 @@ const Post = ({
       socket.off(postId);
     };
   }, []);
-  console.log(picture);
   return (
     <>
       <Box
@@ -176,11 +175,14 @@ const Post = ({
           </Button>
         </Card>
 
-        <Collapse in={showComments} orientation="horizontal">
-          <Card sx={{ height: "100%", bgcolor: "rgba(242,99,170, 0.1)" }}>
+        <Collapse in={showComments} orientation="horizontal" unmountOnExit>
+          <Card sx={{ height: "100%" }}>
             <CardContent sx={{ width: "100%", borderRadius: "5px" }}>
-              <AddCommentForm />
-              comments
+              <AddCommentForm
+                userId={userData.id}
+                postId={postId}
+                username={userData.username}
+              />
             </CardContent>
           </Card>
         </Collapse>

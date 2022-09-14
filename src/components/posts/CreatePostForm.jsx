@@ -8,11 +8,18 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { useS3Upload } from "../../hooks/useS3Upload";
 import { v4 as uuid } from "uuid";
 import { useEffect } from "react";
+import axiosClient from "../../utils/axiosClient";
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreatePostForm({ refetchPosts }) {
   const [postId, setPostId] = useState("");
   const [currImg, setCurrImg] = useState("");
   const { token } = useAuth();
+
+  const { mutateAsync: createPost } = useMutation(
+    async (postData) =>
+      (await axiosClient.post("/posts/createPost", postData)).data
+  );
 
   const [post, setPost] = useState({ text: "" });
   const { s3Upload, progress } = useS3Upload(
@@ -38,9 +45,16 @@ export default function CreatePostForm({ refetchPosts }) {
     }
   );
 
-  const handlePost = (e) => {
+  const handlePost = async (e) => {
     e.preventDefault();
-    setPostId(uuid());
+    if (currImg) setPostId(uuid());
+    else {
+      await createPost({
+        text: post.text,
+        userId: token.id,
+      });
+      refetchPosts();
+    }
   };
 
   useEffect(() => {
