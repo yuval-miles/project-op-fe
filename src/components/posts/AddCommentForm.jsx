@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../../utils/axiosClient";
 import { DateTime } from "luxon";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function AddCommentForm({ userId, postId, username }) {
   const socket = useSocket((state) => state.socket);
@@ -33,11 +34,11 @@ export default function AddCommentForm({ userId, postId, username }) {
     });
   };
   useEffect(() => {
-    socket.on(postId, (data) => {
+    socket.on(`${postId}comment`, (data) => {
       setComments((state) => [data.action, ...state]);
     });
     return () => {
-      socket.off(postId);
+      socket.off(`${postId}comment`);
     };
   }, []);
   return (
@@ -89,7 +90,31 @@ export default function AddCommentForm({ userId, postId, username }) {
                   >
                     <Stack direction={"row"} gap={1}>
                       <Stack>
-                        <Typography>{el.user.username}</Typography>
+                        <Stack direction={"row"} gap={1}>
+                          {el?.user?.picture ? (
+                            <>
+                              <img
+                                src={el?.user?.picture}
+                                style={{
+                                  width: "1rem",
+                                  height: "1rem",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <AccountCircleIcon
+                                style={{
+                                  width: "1rem",
+                                  height: "1rem",
+                                  color: "white",
+                                }}
+                              />
+                            </>
+                          )}
+                          <Typography>{el?.user?.username}</Typography>
+                        </Stack>
                         <Typography sx={{ wordBreak: "break-word" }}>
                           {el.message}
                         </Typography>
@@ -108,26 +133,33 @@ export default function AddCommentForm({ userId, postId, username }) {
         <></>
       )}
 
-        <Box sx={{display:"flex", flexDirection:"column"}}>
-      <TextareaAutosize
-        aria-label="minimum height"
-        minRows={3}
-        placeholder="comment..."
-        value={input}
-        style={{ width: "100%", border: "none", resize: "none" }}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <Button
-        className="btn"
-        variant="outlined"
-        type="submit"
-        sx={{ width: "10%", ml: "auto", color: "black", borderColor: "black" }}
-        onClick={() => {handleAddComment(); setInput("")}}
-      >
-        Add
-      </Button>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <TextareaAutosize
+          aria-label="minimum height"
+          minRows={3}
+          placeholder="comment..."
+          value={input}
+          style={{ width: "100%", border: "none", resize: "none" }}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <Button
+          className="btn"
+          variant="outlined"
+          type="submit"
+          sx={{
+            width: "10%",
+            ml: "auto",
+            color: "black",
+            borderColor: "black",
+          }}
+          onClick={() => {
+            handleAddComment();
+            setInput("");
+          }}
+        >
+          Add
+        </Button>
       </Box>
     </Box>
-
   );
 }
