@@ -13,6 +13,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useUserData } from "../../store/useUserData";
 import { useEffect } from "react";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { DateTime } from "luxon";
+import Divider from "@mui/material/Divider";
 
 const Post = ({
   text,
@@ -22,6 +25,8 @@ const Post = ({
   liked,
   disliked,
   picture,
+  postUser,
+  createdAt,
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [likes, setLikes] = useState({ num: initLikes.length, enabled: true });
@@ -29,7 +34,6 @@ const Post = ({
     num: initDislikes.length,
     enabled: true,
   });
-
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
   const socket = useSocket((state) => state.socket);
@@ -103,18 +107,53 @@ const Post = ({
             p: "1rem",
             borderRadius: "10px",
             bgcolor: "rgba(242,99,170, 0.1)",
-            width:"50%",
+            width: "50%",
           }}
         >
-          {picture ? <Typography
-            align="center"
-            variant="h5"
-            component="div"
-            sx={{ mb: "1rem" }}
+          <Stack
+            direction={"row"}
+            justifyContent="space-between"
+            alignItems={"center"}
           >
-            {text}
-          </Typography> : "" }
-          
+            <Stack direction={"row"} gap={2} alignItems={"center"}>
+              {postUser.picture ? (
+                <>
+                  <img
+                    src={postUser.picture}
+                    style={{
+                      width: "3rem",
+                      height: "3rem",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <AccountCircleIcon
+                    style={{ width: "3rem", height: "3rem", color: "white" }}
+                  />
+                </>
+              )}
+              <Typography>{postUser.username}</Typography>
+            </Stack>
+            <Typography>
+              {DateTime.fromISO(createdAt).toFormat("DD HH:mm")}
+            </Typography>
+          </Stack>
+          <Divider sx={{ marginTop: "15px", marginBottom: "15px" }} />
+          {picture ? (
+            <Typography
+              align="center"
+              variant="h5"
+              component="div"
+              sx={{ mb: "1rem" }}
+            >
+              {text}
+            </Typography>
+          ) : (
+            ""
+          )}
+
           <Box
             sx={{
               mb: "1rem",
@@ -143,18 +182,21 @@ const Post = ({
               <Typography>{likes.num}</Typography>
             </Box>
             <Box>
-              {picture?<Box className="photo">
-                {" "}
-                <img src={picture} />
-              </Box> : <Typography
-            align="center"
-            variant="h5"
-            component="div"
-            sx={{ mb: "1rem" }}
-          >
-            {text}
-          </Typography>}
-              
+              {picture ? (
+                <Box className="photo">
+                  {" "}
+                  <img src={picture} />
+                </Box>
+              ) : (
+                <Typography
+                  align="center"
+                  variant="h5"
+                  component="div"
+                  sx={{ mb: "1rem" }}
+                >
+                  {text}
+                </Typography>
+              )}
             </Box>
             <Box
               sx={{
@@ -181,13 +223,18 @@ const Post = ({
             onClick={() => setShowComments((state) => !state)}
             aria-expanded={showComments}
           >
-            <CommentIcon sx={{ color: "blueviolet", fontSize:"2rem" }} />
+            <CommentIcon sx={{ color: "blueviolet", fontSize: "2rem" }} />
           </Button>
         </Card>
 
-        <Collapse in={showComments} sx={{border:"3px solid blue"}} orientation="horizontal" unmountOnExit>
-          <Card sx={{height:"100%"}}>
-            <CardContent sx={{ height:"100%", borderRadius: "5px"}}>
+        <Collapse
+          in={showComments}
+          sx={{ border: "3px solid blue" }}
+          orientation="horizontal"
+          unmountOnExit
+        >
+          <Card sx={{ height: "100%" }}>
+            <CardContent sx={{ height: "100%", borderRadius: "5px" }}>
               <AddCommentForm
                 userId={userData.id}
                 postId={postId}

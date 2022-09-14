@@ -9,6 +9,8 @@ import {
   Collapse,
   Tooltip,
   Typography,
+  Stack,
+  LinearProgress,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,6 +21,8 @@ import { useDebounce } from "../hooks/useDebounce";
 import Snackbar from "@mui/material/Snackbar";
 import { useEffect } from "react";
 import { useUserData } from "../store/useUserData";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useS3Upload } from "../hooks/useS3Upload";
 
 const emailValidator =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
@@ -27,6 +31,7 @@ const passwordValidator = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 export const ProfileSettings = () => {
   const { token, refetchAuth } = useAuth();
   const userData = useUserData((state) => state.userData);
+  const [currImg, setCurrImg] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [input, setInput] = useState({
     username: "",
@@ -40,6 +45,22 @@ export const ProfileSettings = () => {
     showError: false,
     errorMessage: "",
   });
+  const { s3Upload, progress } = useS3Upload(
+    userData?.id,
+    "userphoto/",
+    currImg,
+    `/users/${userData?.id}`,
+    "post",
+    {},
+    (data, uploadUrl) => {
+      return { picture: uploadUrl?.response.split("?")[0] };
+    },
+    "Picture uploaded",
+    null
+  );
+  useEffect(() => {
+    if (currImg) s3Upload();
+  }, [currImg]);
   const { mutate: updateUser } = useMutation(
     async (userData) =>
       (await axiosClient.post(`/users/${token.id}`, userData)).data,
@@ -156,8 +177,37 @@ export const ProfileSettings = () => {
           borderRadius: "10px",
           p: "5rem",
           boxShadow: 5,
+          gap: 3,
         }}
       >
+        <Stack direction={"row"} gap={4} alignItems={"baseline"}>
+          {userData?.picture ? (
+            <>
+              <img
+                src={userData.picture}
+                style={{ width: "5rem", height: "5rem", borderRadius: "50%" }}
+              />
+            </>
+          ) : (
+            <>
+              <AccountCircleIcon sx={{ fontSize: "5rem", color: "white" }} />
+            </>
+          )}
+          <Button component="label" variant="contained">
+            <Typography>Add a profile picture</Typography>
+            <input
+              type="file"
+              hidden
+              accept="image/png, image/jpeg"
+              onChange={(e) => {
+                if (e.target.files?.[0]) setCurrImg(e.target.files?.[0]);
+              }}
+            />
+          </Button>
+        </Stack>
+        <Collapse in={progress.show} sx={{ width: "100%" }}>
+          <LinearProgress variant="determinate" value={progress.value} />
+        </Collapse>
         <TextField
           label="User Name"
           value={input.username}

@@ -10,7 +10,6 @@ import axiosClient from "../../utils/axiosClient";
 import { DateTime } from "luxon";
 
 export default function AddCommentForm({ userId, postId, username }) {
-  console.log(postId);
   const socket = useSocket((state) => state.socket);
   const [input, setInput] = useState("");
   const [comments, setComments] = useState([]);
@@ -35,16 +34,14 @@ export default function AddCommentForm({ userId, postId, username }) {
   };
   useEffect(() => {
     socket.on(postId, (data) => {
-      console.log(data);
       setComments((state) => [data.action, ...state]);
     });
     return () => {
       socket.off(postId);
     };
   }, []);
-  console.log(comments);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column"}}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       {comments ? (
         <>
           <Stack sx={{ overflowY: "auto", height: "280px" }}>
