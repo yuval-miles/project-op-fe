@@ -1,4 +1,5 @@
 import { Box, Button, Stack } from "@mui/material";
+import "../../pages/Feed.css";
 import { useState } from "react";
 import { useSocket } from "../../store/useSocket";
 import Card from "@mui/material/Card";
@@ -98,19 +99,20 @@ const Post = ({
           width: "100%",
         }}
       >
-        <Card sx={{ width: "50%", p: "1rem" }}>
-          <CardContent>
-            <img src={picture} />
-            <Typography align="center" variant="h5" component="div">
-              {text}
-            </Typography>
-          </CardContent>
-
+        <Card
+          sx={{
+            p: "1rem",
+            borderRadius: "10px",
+            bgcolor: "rgba(242,99,170, 0.1)",
+          }}
+        >
           <Box
             sx={{
               mb: "1rem",
               display: "flex",
-              justifyContent: "space-between",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Box
@@ -122,12 +124,23 @@ const Post = ({
             >
               <Button onClick={handleLike} disabled={!likes.enabled}>
                 {!isLiked ? (
-                  <FavoriteBorderIcon sx={{ color: "darkgrey" }} />
+                  <FavoriteBorderIcon
+                    sx={{ color: "black", fontSize: "3rem" }}
+                  />
                 ) : (
-                  <FavoriteIcon sx={{ color: "red" }} />
+                  <FavoriteIcon sx={{ color: "red", fontSize: "3rem" }} />
                 )}
               </Button>
               <Typography>{likes.num}</Typography>
+            </Box>
+            <Box>
+              <Typography align="center" variant="h5" component="div" sx={{mb:"1rem"}}>
+                {text}
+              </Typography>
+              <Box className="photo" sx={{mx:"1rem"}}>
+                {" "}
+                <img src={picture} />
+              </Box>
             </Box>
             <Box
               sx={{
@@ -138,9 +151,11 @@ const Post = ({
             >
               <Button onClick={handleDisLike} disabled={!disLikes.enabled}>
                 {!isDisliked ? (
-                  <NotInterestedIcon sx={{ color: "darkgrey" }} />
+                  <NotInterestedIcon
+                    sx={{ color: "black", fontSize: "3rem" }}
+                  />
                 ) : (
-                  <NotInterestedIcon sx={{ color: "red" }} />
+                  <NotInterestedIcon sx={{ color: "red", fontSize: "3rem" }} />
                 )}
               </Button>
               <Typography>{disLikes.num}</Typography>
@@ -157,9 +172,9 @@ const Post = ({
         </Card>
 
         <Collapse in={showComments} orientation="horizontal">
-          <Card sx={{ height: "100%" }}>
+          <Card sx={{ height: "100%",bgcolor: "rgba(242,99,170, 0.1)" }}>
             <CardContent
-              sx={{ bgcolor: "white", width: "100%", borderRadius: "5px" }}
+              sx={{width: "100%", borderRadius: "5px" }}
             >
               <AddCommentForm />
               comments
