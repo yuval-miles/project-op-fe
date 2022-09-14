@@ -193,7 +193,7 @@ export const ProfileSettings = () => {
               <AccountCircleIcon sx={{ fontSize: "5rem", color: "white" }} />
             </>
           )}
-          <Button component="label" variant="contained">
+          <Button className="btn" component="label" variant="outlined" sx={{color:"black", border:"black 1px solid"}}>
             <Typography>Add a profile picture</Typography>
             <input
               type="file"
@@ -251,7 +251,6 @@ export const ProfileSettings = () => {
           className="btn"
           variant="outlined"
           type="submit"
-          size="small"
           sx={{
             color: "black",
             borderColor: "black",

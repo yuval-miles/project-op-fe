@@ -228,8 +228,8 @@ const Post = ({
         </Card>
 
         <Collapse in={showComments} sx={{ bgcolor: "rgba(227,226,170, 0.1)"}} orientation="horizontal" unmountOnExit>
-          <Card sx={{height:"100%",bgcolor: "rgba(242,99,170, 0.1)"}}>
-            <CardContent sx={{ height:"100%", borderRadius: "5px"}}>
+          <Card sx={{height:"100%",bgcolor: "rgba(242,99,170, 0.1)",width:"30rem"}}>
+            <CardContent sx={{borderRadius: "5px"}}>
               <AddCommentForm
                 userId={userData.id}
                 postId={postId}

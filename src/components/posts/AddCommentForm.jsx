@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { Box, Button, Chip, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import "../../pages/Feed.css";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import { useSocket } from "../../store/useSocket";
@@ -42,10 +42,17 @@ export default function AddCommentForm({ userId, postId, username }) {
     };
   }, []);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        height: "40rem",
+        display: "flex",
+        gap: "1rem",
+        flexDirection: "column",
+      }}
+    >
       {comments ? (
         <>
-          <Stack sx={{ overflowY: "auto", height: "280px" }}>
+          <Stack sx={{ overflowY: "scroll", height: "30rem" }}>
             <Stack
               sx={{
                 padding: "10px",
@@ -90,14 +97,22 @@ export default function AddCommentForm({ userId, postId, username }) {
                   >
                     <Stack direction={"row"} gap={1}>
                       <Stack>
-                        <Stack direction={"row"} gap={1}>
+                        <Stack
+                          direction={"row"}
+                          gap={1}
+                          sx={{
+                            mb: "0.5rem",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           {el?.user?.picture ? (
                             <>
                               <img
                                 src={el?.user?.picture}
                                 style={{
-                                  width: "1rem",
-                                  height: "1rem",
+                                  width: "1.5rem",
+                                  height: "1.5rem",
                                   borderRadius: "50%",
                                 }}
                               />
@@ -106,8 +121,8 @@ export default function AddCommentForm({ userId, postId, username }) {
                             <>
                               <AccountCircleIcon
                                 style={{
-                                  width: "1rem",
-                                  height: "1rem",
+                                  width: "1.5rem",
+                                  height: "1.5rem",
                                   color: "white",
                                 }}
                               />
@@ -130,14 +145,23 @@ export default function AddCommentForm({ userId, postId, username }) {
           </Stack>
         </>
       ) : (
-        <></>
+        <Box className="ttt" sx={{ border: "3px solid red"}}>
+          Be the first one to leave a comment...
+        </Box>
       )}
-
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Divider />
+      <Stack
+        sx={{
+          display: "flex",
+          height: "10rem",
+          flexDirection: "column",
+          p: "1rem",
+        }}
+      >
         <TextareaAutosize
           aria-label="minimum height"
-          minRows={3}
-          placeholder="comment..."
+          minRows={5}
+          placeholder="Type here..."
           value={input}
           style={{ width: "100%", border: "none", resize: "none" }}
           onChange={(e) => setInput(e.target.value)}
@@ -147,7 +171,6 @@ export default function AddCommentForm({ userId, postId, username }) {
           variant="outlined"
           type="submit"
           sx={{
-            width: "10%",
             ml: "auto",
             color: "black",
             borderColor: "black",
@@ -159,7 +182,7 @@ export default function AddCommentForm({ userId, postId, username }) {
         >
           Add
         </Button>
-      </Box>
+      </Stack>
     </Box>
   );
 }

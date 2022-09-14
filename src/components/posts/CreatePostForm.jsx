@@ -127,21 +127,23 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
         </>
       ) : (
         <>
-          <img src={URL.createObjectURL(currImg)} />
-          <Button
-            className="btn"
-            variant="outlined"
-            type="submit"
+          <img src={URL.createObjectURL(currImg)}/>
+          <Box align="center" sx={{mt:"-3rem",mb:"2.5rem"}}>
+            <Button
+            className="btnDel"
+            variant="contained"
             sx={{
+              px:"2.5rem",
               width: "10%",
-              ml: "auto",
-              color: "black",
-              borderColor: "black",
+              color: "blueviolet",
+              bgcolor:"white",
             }}
             onClick={()=>setCurrImg("")}
           >
-            delete
+            remove
           </Button>
+          </Box>
+          
         </>
       )}
       <Collapse in={progress.show} sx={{ width: "100%" }}>
