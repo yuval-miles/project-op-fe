@@ -66,7 +66,7 @@ export default function CreatePostForm({ refetchPosts }) {
       onSubmit={handlePost}
       className="postForm"
       sx={{
-        width: "50%",
+        width: "40%",
         borderRadius: "10px",
         mx: "auto",
         p: "1rem",
