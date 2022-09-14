@@ -15,6 +15,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import { useAuth } from "../hooks/useAuth";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
+import { Opacity } from "@mui/icons-material";
 
 export default function Menu() {
   const navigate = useNavigate();

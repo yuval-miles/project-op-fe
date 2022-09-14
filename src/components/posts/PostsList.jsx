@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useState } from "react";
 import Post from "./Post";
 
-export default function PostsList({ postsList, myLikes }) {
+export default function PostsList({ postsList, myLikes, myDislikes }) {
   return (
     <>
       <Box
@@ -22,6 +22,7 @@ export default function PostsList({ postsList, myLikes }) {
             initLikes={post.likes}
             initDislikes={post.dislikes}
             liked={!!myLikes[post.id]}
+            disliked={!!myDislikes[post.id]}
           />
         ))}
       </Box>
