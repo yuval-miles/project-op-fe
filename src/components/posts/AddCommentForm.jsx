@@ -47,7 +47,7 @@ export default function AddCommentForm({ userId, postId, username }) {
           <Stack sx={{ overflowY: "auto", height: "280px" }}>
             <Stack
               sx={{
-                padding: "10px",
+                padding: "0.5rem",
                 gap: "5px",
                 overflowY: "auto",
                 flexDirection: "column-reverse",
