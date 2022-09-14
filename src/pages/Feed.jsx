@@ -9,7 +9,7 @@ import CreatePostModal from "../components/posts/CreatePostModal";
 
 const Feed = () => {
   const [openPostModal, setOpenPostModal] = useState(false);
-  const [isPosted, setIsPosted] = useState(false)
+  const [isPosted, setIsPosted] = useState(false);
   const [postsList, setPostsList] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
   const [myDislikes, setMyDislikes] = useState([]);
@@ -28,20 +28,28 @@ const Feed = () => {
     }
   );
 
-  const handleOpenPostModal = (isPosted) => {setOpenPostModal(true); setIsPosted(true)}
+  const handleOpenPostModal = (isPosted) => {
+    setOpenPostModal(true);
+    setIsPosted(true);
+  };
   const handleClosePostModal = () => setOpenPostModal(false);
   return (
     <>
-    <Button
-          className="btn"
-          onClick={() => handleOpenPostModal(true)}
-          variant="outlined"
-          size="large"
-          sx={{ color: "black", borderColor: "black", mt: "5rem" }}
-        >
-          Add a post
-        </Button>
-      <CreatePostModal openPostModal={openPostModal} handleClosePostModal={handleClosePostModal} isPosted={isPosted}/>
+      <Button
+        className="btn"
+        onClick={() => handleOpenPostModal(true)}
+        variant="outlined"
+        size="large"
+        sx={{ color: "black", borderColor: "black", mt: "5rem" }}
+      >
+        Add a post
+      </Button>
+      <CreatePostModal
+        openPostModal={openPostModal}
+        handleClosePostModal={handleClosePostModal}
+        isPosted={isPosted}
+        refetchPosts={refetchPosts}
+      />
       <PostsList
         postsList={postsList}
         myLikes={myLikes}
@@ -52,4 +60,3 @@ const Feed = () => {
 };
 
 export default Feed;
-

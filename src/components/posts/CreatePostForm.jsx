@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { useMutation } from "@tanstack/react-query";
 
-export default function CreatePostForm({ refetchPosts}) {
+export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
   const [postId, setPostId] = useState("");
   const [currImg, setCurrImg] = useState("");
   const { token } = useAuth();
@@ -42,6 +42,7 @@ export default function CreatePostForm({ refetchPosts}) {
     () => {
       refetchPosts();
       setCurrImg("");
+      handleClosePostModal();
     }
   );
 
