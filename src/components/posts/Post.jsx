@@ -13,8 +13,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useUserData } from "../../store/useUserData";
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axiosClient from "../../utils/axiosClient";
 
 const Post = ({
   text,
@@ -180,7 +178,11 @@ const Post = ({
         <Collapse in={showComments} orientation="horizontal" unmountOnExit>
           <Card sx={{ height: "100%" }}>
             <CardContent sx={{ width: "100%", borderRadius: "5px" }}>
-              <AddCommentForm userId={userData.id} postId={postId} />
+              <AddCommentForm
+                userId={userData.id}
+                postId={postId}
+                username={userData.username}
+              />
             </CardContent>
           </Card>
         </Collapse>

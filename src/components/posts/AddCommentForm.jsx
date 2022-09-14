@@ -9,14 +9,15 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../../utils/axiosClient";
 import { DateTime } from "luxon";
 
-export default function AddCommentForm({ userId, postId }) {
+export default function AddCommentForm({ userId, postId, username }) {
   console.log(postId);
   const socket = useSocket((state) => state.socket);
   const [input, setInput] = useState("");
   const [comments, setComments] = useState([]);
   const { isLoading } = useQuery(
     [`${postId}Comments`],
-    async () => (await axiosClient.get(`/posts/${postId}/getcomments`)).data,
+
+    async () => (await axiosClient.get(`/posts/getcomments/${postId}`)).data,
     {
       refetchOnWindowFocus: false,
       onSuccess: (data) => {
@@ -34,8 +35,11 @@ export default function AddCommentForm({ userId, postId }) {
   };
   useEffect(() => {
     socket.on(postId, (data) => {
-      console.log(data);
+      setComments((state) => [data.action, ...state]);
     });
+    return () => {
+      socket.off(postId);
+    };
   }, []);
   console.log(comments);
   return (
@@ -58,7 +62,7 @@ export default function AddCommentForm({ userId, postId }) {
       </Button>
       {comments ? (
         <>
-          <Stack sx={{ overflowY: "auto" }}>
+          <Stack sx={{ overflowY: "auto", height: "280px" }}>
             <Stack
               sx={{
                 padding: "10px",
@@ -103,7 +107,7 @@ export default function AddCommentForm({ userId, postId }) {
                   >
                     <Stack direction={"row"} gap={1}>
                       <Stack>
-                        <Typography>{el.userName}</Typography>
+                        <Typography>{el.user.username}</Typography>
                         <Typography sx={{ wordBreak: "break-word" }}>
                           {el.message}
                         </Typography>
