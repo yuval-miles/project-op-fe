@@ -8,18 +8,21 @@ import Collapse from "@mui/material/Collapse";
 import CommentIcon from "@mui/icons-material/Comment";
 import AddCommentForm from "./AddCommentForm";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useUserData } from "../../store/useUserData";
 import { useEffect } from "react";
 
-const Post = ({ text, postId, initLikes, initDislikes, liked }) => {
+const Post = ({ text, postId, initLikes, initDislikes, liked , disliked}) => {
   const [showComments, setShowComments] = useState(false);
   const [likes, setLikes] = useState({ num: initLikes.length, enabled: true });
   const [disLikes, setDisLikes] = useState({
     num: initDislikes.length,
     enabled: true,
   });
+  
   const [isLiked, setIsLiked] = useState(liked);
+  const [isDisliked, setIsDisliked] = useState(disliked);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
 
@@ -42,23 +45,31 @@ const Post = ({ text, postId, initLikes, initDislikes, liked }) => {
       switch (action) {
         case "removeLike":
           setLikes((state) => ({ enabled: true, num: state.num - 1 }));
+          setIsLiked(false)
           break;
         case "addLike":
           setLikes((state) => ({ enabled: true, num: state.num + 1 }));
+          setIsLiked(true)
           break;
         case "removeDislike":
           setDisLikes((state) => ({ enabled: true, num: state.num - 1 }));
+          setIsDisliked(false)
           break;
         case "addDislike":
           setDisLikes((state) => ({ enabled: true, num: state.num + 1 }));
+          setIsDisliked(true)
           break;
         case "addLike&&removeDislike":
           setLikes((state) => ({ enabled: true, num: state.num + 1 }));
           setDisLikes((state) => ({ enabled: true, num: state.num - 1 }));
+          setIsLiked(true)
+          setIsDisliked(false)
           break;
         case "addDislike&&removeLike":
           setLikes((state) => ({ enabled: true, num: state.num - 1 }));
           setDisLikes((state) => ({ enabled: true, num: state.num + 1 }));
+          setIsLiked(false)
+          setIsDisliked(true)
           break;
         default:
           break;
@@ -78,7 +89,7 @@ const Post = ({ text, postId, initLikes, initDislikes, liked }) => {
           width: "100%",
         }}
       >
-        <Card sx={{ width: "50%" }}>
+        <Card sx={{ width: "50%", p:"1rem" }}>
           <CardContent>
             <Typography align="center" variant="h5" component="div">
               {text}
@@ -87,32 +98,31 @@ const Post = ({ text, postId, initLikes, initDislikes, liked }) => {
 
           <Box
             sx={{
-              px: "2rem",
-              mb: "2rem",
+              mb: "1rem",
               display: "flex",
               justifyContent: "space-between",
             }}
           >
-            <Stack direction={"row"} gap={2}>
+            <Box sx={{display:"flex", flexDirection:"column",alignItems:"center"}}>
               <Button onClick={handleLike} disabled={!likes.enabled}>
-                <FavoriteBorderIcon sx={{ color: "green" }} />
+                {!isLiked ?<FavoriteBorderIcon sx={{ color: "darkgrey" }} />:<FavoriteIcon sx={{ color: "red" }} />}
               </Button>
               <Typography>{likes.num}</Typography>
-            </Stack>
-            <Stack direction={"row"} gap={2}>
+            </Box>
+            <Box sx={{display:"flex" , flexDirection:"column",alignItems:"center"}}>
               <Button onClick={handleDisLike} disabled={!disLikes.enabled}>
-                <NotInterestedIcon sx={{ color: "red" }} />
+              {!isDisliked ?<NotInterestedIcon sx={{ color: "darkgrey" }} />:<NotInterestedIcon sx={{ color: "red" }} />}
               </Button>
               <Typography>{disLikes.num}</Typography>
-            </Stack>
+            </Box>
           </Box>
 
           <Button
-            sx={{ display: "flex", ml: "auto" }}
+            sx={{ display: "flex", ml: "auto" , border:"none"}}
             onClick={() => setShowComments((state) => !state)}
             aria-expanded={showComments}
           >
-            <CommentIcon />
+            <CommentIcon sx={{color:"blueviolet"}}/>
           </Button>
         </Card>
 

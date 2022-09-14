@@ -137,6 +137,7 @@ export default function Home() {
       </Box>
       <Box align="center" mt={10}>
         <Button
+          className="btn"
           onClick={() => handleOpenModal(true)}
           variant="outlined"
           size="large"

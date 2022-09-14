@@ -101,7 +101,7 @@ export const LoginForm = ({ handleCloseModal }) => {
         <Collapse in={input.showError}>
           <Alert severity="error">{input.errorMessage}</Alert>
         </Collapse>
-        <Button type="submit" variant="contained">
+        <Button className="btnHome" type="submit" variant="contained" sx={{bgcolor:"blueviolet"}}>
           Login
         </Button>
       </Stack>

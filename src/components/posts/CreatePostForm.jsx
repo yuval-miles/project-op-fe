@@ -54,15 +54,15 @@ export default function CreatePostForm() {
     <Box
       component="form"
       onSubmit={handlePost}
+      className="postForm"
       sx={{
         width: "50%",
-        borderRadius: "5px",
+        borderRadius: "10px",
         mx: "auto",
         p: "1rem",
         mt: "2rem",
         display: "flex",
         flexDirection: "column",
-        border: "solid red 1px",
       }}
     >
       <TextareaAutosize
@@ -117,9 +117,10 @@ export default function CreatePostForm() {
         <LinearProgress variant="determinate" value={progress.value} />
       </Collapse>
       <Button
-        variant="contained"
+        className="btn"
+        variant="outlined"
         type="submit"
-        sx={{ width: "10%", ml: "auto" }}
+        sx={{ width: "10%", ml: "auto", color: "black", borderColor: "black" }}
       >
         Add
       </Button>

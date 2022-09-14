@@ -8,7 +8,7 @@ import {
   Alert,
   Collapse,
   Tooltip,
-  Paper
+  Typography,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -16,6 +16,7 @@ import PasswordFields from "../components/login/PasswordFields";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosClient from "../utils/axiosClient";
 import { useDebounce } from "../hooks/useDebounce";
+import Snackbar from "@mui/material/Snackbar";
 
 const emailValidator =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
@@ -23,6 +24,7 @@ const passwordValidator = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 export const ProfileSettings = () => {
   const { token } = useAuth();
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -37,7 +39,24 @@ export const ProfileSettings = () => {
   });
   const { mutate: updateUser } = useMutation(
     async (userData) =>
-      (await axiosClient.post(`/users/${token.id}`, userData)).data
+      (await axiosClient.post(`/users/${token.id}`, userData)).data,
+    {
+      onSuccess: () => {
+        handleOpenSnackBar(true);
+        setShowLogin(true);
+      },
+      onError: ({
+        response: {
+          data: { message },
+        },
+      }) => {
+        setInput((state) => ({
+          ...state,
+          showError: true,
+          errorMessage: message,
+        }));
+      },
+    }
   );
   const { data: emailExists, refetch } = useQuery(
     ["userExists"],
@@ -53,9 +72,6 @@ export const ProfileSettings = () => {
   const handleUpdatedUser = (e) => {
     e.preventDefault();
     if (
-      !input.username ||
-      !input.password ||
-      !input.email ||
       !input.emailValid ||
       !input.passwordValid ||
       !input.passwordsMatch ||
@@ -107,8 +123,12 @@ export const ProfileSettings = () => {
     else setInput({ ...input, field: e.target.value });
   };
 
+  const handleOpenSnackBar = () => setOpenSnackBar(true);
+  const handleCloseSnackBar = () => setOpenSnackBar(false);
+
   return (
     <>
+        <Typography variant="h4" align="center" sx={{mt: "2rem"}}>Update my profile</Typography>
       <Box
         component="form"
         onSubmit={(e) => handleUpdatedUser(e)}
@@ -116,11 +136,11 @@ export const ProfileSettings = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          mt: "5rem",
+          mt: "2rem",
           mx: "20%",
-          borderRadius:"10px",
-          p:"5rem",
-          boxShadow: 5
+          borderRadius: "10px",
+          p: "5rem",
+          boxShadow: 5,
         }}
       >
         <TextField
@@ -153,21 +173,16 @@ export const ProfileSettings = () => {
             ),
           }}
         />
-        {/* <TextField
-          required
-          type="password"
-          label="Previous password"
-          style={{ minHeight: "80px" }}
-        /> */}
         <PasswordFields
           input={input}
           setInput={setInput}
           handleChange={handleChange}
         />
-         <Collapse in={input.showError}>
-            <Alert severity="error">{input.errorMessage}</Alert>
-          </Collapse>
+        <Collapse in={input.showError}>
+          <Alert severity="error">{input.errorMessage}</Alert>
+        </Collapse>
         <Button
+          className="btn"
           variant="outlined"
           type="submit"
           size="small"
@@ -181,6 +196,19 @@ export const ProfileSettings = () => {
           Save changes
         </Button>
       </Box>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackBar}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Profile successfully updated!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

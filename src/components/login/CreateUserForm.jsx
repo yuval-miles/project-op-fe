@@ -121,7 +121,7 @@ export const CreateUserForm = ({ handleOpenSnackBar, setShowLogin }) => {
   return (
     <Box component="form" onSubmit={(e) => handleCreateUser(e)}>
       <Stack gap={3}>
-        <Stack gap={1} style={{ minWidth: "400px" }}>
+        <Stack gap={1}>
           <TextField
             required
             label="User Name"
@@ -162,7 +162,7 @@ export const CreateUserForm = ({ handleOpenSnackBar, setShowLogin }) => {
           <Collapse in={input.showError}>
             <Alert severity="error">{input.errorMessage}</Alert>
           </Collapse>
-          <Button type="submit" variant="contained">
+          <Button type="submit" className="btnHome" variant="contained" sx={{bgcolor:"blueviolet"}}>
             Create Account
           </Button>
         </Stack>

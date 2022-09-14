@@ -15,6 +15,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import { useAuth } from "../hooks/useAuth";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
+import { Opacity } from "@mui/icons-material";
 
 export default function Menu() {
   const navigate = useNavigate();
@@ -77,12 +78,13 @@ export default function Menu() {
       <Divider />
       <Box sx={{ display: "flex", justifyContent: "center", height: "60%" }}>
         <Button
+          className="btn"
           variant="outlined"
           size="large"
           sx={{
             color: "black",
             borderColor: "black",
-            border: "1px solid red",
+            border: "1px solid black",
             alignSelf: "flex-end",
           }}
           onClick={logout}
@@ -98,7 +100,7 @@ export default function Menu() {
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)} sx={{ color: "black" }}>
-            <MenuIcon />{" "}
+            <MenuIcon className="menuIcon"/>{" "}
           </Button>
           <Drawer
             anchor={anchor}
