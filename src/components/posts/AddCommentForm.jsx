@@ -35,6 +35,7 @@ export default function AddCommentForm({ userId, postId, username }) {
   };
   useEffect(() => {
     socket.on(postId, (data) => {
+      console.log(data);
       setComments((state) => [data.action, ...state]);
     });
     return () => {
