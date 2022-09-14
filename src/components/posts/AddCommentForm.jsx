@@ -110,10 +110,13 @@ export default function AddCommentForm({ userId, postId, username }) {
       ) : (
         <></>
       )}
+
+        <Box sx={{display:"flex", flexDirection:"column"}}>
       <TextareaAutosize
         aria-label="minimum height"
         minRows={3}
         placeholder="comment..."
+        value={input}
         style={{ width: "100%", border: "none", resize: "none" }}
         onChange={(e) => setInput(e.target.value)}
       />
@@ -122,10 +125,12 @@ export default function AddCommentForm({ userId, postId, username }) {
         variant="outlined"
         type="submit"
         sx={{ width: "10%", ml: "auto", color: "black", borderColor: "black" }}
-        onClick={handleAddComment}
+        onClick={() => {handleAddComment(); setInput("")}}
       >
         Add
       </Button>
+      </Box>
     </Box>
+
   );
 }

@@ -103,9 +103,14 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
               alignItems: "center",
             }}
           >
-            <Button component="label" sx={{display:"flex", flexDirection:"column", p:"6rem"}}>
-              <Typography align="center">Add a Photo to your question?</Typography>
-              <PhotoCamera sx={{fontSize:"2rem"}}/>
+            <Button
+              component="label"
+              sx={{ display: "flex", flexDirection: "column", p: "6rem" }}
+            >
+              <Typography align="center">
+                Add a Photo to your question?
+              </Typography>
+              <PhotoCamera sx={{ fontSize: "2rem" }} />
               <input
                 type="file"
                 hidden
@@ -120,6 +125,20 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
       ) : (
         <>
           <img src={URL.createObjectURL(currImg)} />
+          <Button
+            className="btn"
+            variant="outlined"
+            type="submit"
+            sx={{
+              width: "10%",
+              ml: "auto",
+              color: "black",
+              borderColor: "black",
+            }}
+            onClick={()=>setCurrImg("")}
+          >
+            delete
+          </Button>
         </>
       )}
       <Collapse in={progress.show} sx={{ width: "100%" }}>
