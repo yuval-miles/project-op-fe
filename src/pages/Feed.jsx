@@ -1,13 +1,15 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import CreatePostForm from "../components/posts/CreatePostForm";
 import PostsList from "../components/posts/PostsList";
 import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../utils/axiosClient";
 import { useAuth } from "../hooks/useAuth";
+import CreatePostModal from "../components/posts/CreatePostModal";
 
 const Feed = () => {
+  const [openPostModal, setOpenPostModal] = useState(false);
+  const [isPosted, setIsPosted] = useState(false)
   const [postsList, setPostsList] = useState([]);
   const [myLikes, setMyLikes] = useState([]);
   const [myDislikes, setMyDislikes] = useState([]);
@@ -23,12 +25,23 @@ const Feed = () => {
         setMyDislikes(data.response.myDislikesObj);
       },
       refetchOnWindowFocus: false,
-      // refetchInterval: 5000,
     }
   );
+
+  const handleOpenPostModal = (isPosted) => {setOpenPostModal(true); setIsPosted(true)}
+  const handleClosePostModal = () => setOpenPostModal(false);
   return (
     <>
-      <CreatePostForm refetchPosts={refetchPosts} />
+    <Button
+          className="btn"
+          onClick={() => handleOpenPostModal(true)}
+          variant="outlined"
+          size="large"
+          sx={{ color: "black", borderColor: "black", mt: "5rem" }}
+        >
+          Add a post
+        </Button>
+      <CreatePostModal openPostModal={openPostModal} handleClosePostModal={handleClosePostModal} isPosted={isPosted}/>
       <PostsList
         postsList={postsList}
         myLikes={myLikes}
@@ -39,3 +52,4 @@ const Feed = () => {
 };
 
 export default Feed;
+
