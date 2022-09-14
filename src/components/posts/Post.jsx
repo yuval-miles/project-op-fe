@@ -105,6 +105,14 @@ const Post = ({
             bgcolor: "rgba(242,99,170, 0.1)",
           }}
         >
+          <Typography
+            align="center"
+            variant="h5"
+            component="div"
+            sx={{ mb: "1rem" }}
+          >
+            {text}
+          </Typography>
           <Box
             sx={{
               mb: "1rem",
@@ -133,14 +141,6 @@ const Post = ({
               <Typography>{likes.num}</Typography>
             </Box>
             <Box>
-              <Typography
-                align="center"
-                variant="h5"
-                component="div"
-                sx={{ mb: "1rem" }}
-              >
-                {text}
-              </Typography>
               <Box className="photo" sx={{ mx: "1rem" }}>
                 {" "}
                 <img src={picture} />
