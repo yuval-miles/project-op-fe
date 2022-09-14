@@ -23,6 +23,7 @@ export default function PostsList({ postsList, myLikes, myDislikes }) {
             initDislikes={post.dislikes}
             liked={!!myLikes[post.id]}
             disliked={!!myDislikes[post.id]}
+            disliked={!!myDislikes[post.id]}
           />
         ))}
       </Box>

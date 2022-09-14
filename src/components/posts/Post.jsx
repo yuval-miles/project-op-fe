@@ -20,17 +20,16 @@ const Post = ({ text, postId, initLikes, initDislikes, liked , disliked}) => {
     num: initDislikes.length,
     enabled: true,
   });
+  
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
   const socket = useSocket((state) => state.socket);
   const userData = useUserData((state) => state.userData);
 
-
   const handleLike = () => {
     setLikes((state) => ({ ...state, enabled: false }));
     if (userData)
       socket.emit("likeEvent", { userId: userData.id, type: "like", postId });
-      
   };
   const handleDisLike = () => {
     setDisLikes((state) => ({ ...state, enabled: false }));
