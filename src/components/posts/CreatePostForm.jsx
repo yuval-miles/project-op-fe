@@ -26,6 +26,7 @@ export default function CreatePostForm({ refetchPosts }) {
       return {
         ...data.post,
         userId: token.id,
+        username: token.username,
         id: data.postId,
         picture: uploadUrl?.response.split("?")[0],
       };
