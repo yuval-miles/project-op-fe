@@ -10,10 +10,12 @@ import { v4 as uuid } from "uuid";
 import { useEffect } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { useMutation } from "@tanstack/react-query";
+import { useUserData } from "../../store/useUserData";
 
 export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
   const [postId, setPostId] = useState("");
   const [currImg, setCurrImg] = useState("");
+  const userData = useUserData((state) => state.userData);
   const { token } = useAuth();
 
   const { mutateAsync: createPost } = useMutation(
@@ -33,7 +35,7 @@ export default function CreatePostForm({ refetchPosts, handleClosePostModal }) {
       return {
         ...data.post,
         userId: token.id,
-        username: token.username,
+        username: userData.username,
         id: data.postId,
         picture: uploadUrl?.response.split("?")[0],
       };

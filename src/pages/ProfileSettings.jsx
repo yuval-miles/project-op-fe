@@ -17,13 +17,16 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosClient from "../utils/axiosClient";
 import { useDebounce } from "../hooks/useDebounce";
 import Snackbar from "@mui/material/Snackbar";
+import { useEffect } from "react";
+import { useUserData } from "../store/useUserData";
 
 const emailValidator =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 const passwordValidator = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 export const ProfileSettings = () => {
-  const { token } = useAuth();
+  const { token, refetchAuth } = useAuth();
+  const userData = useUserData((state) => state.userData);
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [input, setInput] = useState({
     username: "",
@@ -43,7 +46,6 @@ export const ProfileSettings = () => {
     {
       onSuccess: () => {
         handleOpenSnackBar(true);
-        setShowLogin(true);
       },
       onError: ({
         response: {
@@ -69,26 +71,28 @@ export const ProfileSettings = () => {
   );
   const checkEmail = useDebounce(() => refetch(), 500);
 
-  const handleUpdatedUser = (e) => {
+  const handleUpdateUser = (e) => {
     e.preventDefault();
+    if (!token) return;
     if (
       !input.emailValid ||
       !input.passwordValid ||
       !input.passwordsMatch ||
-      emailExists
+      (emailExists && input.email !== userData.email)
     ) {
-      setInput((state) => ({
-        ...state,
-        showError: true,
-        errorMessage: "Please provide valid inputs",
-      }));
+      setInput((state) => ({ ...state, showError: true }));
       return;
     }
-    updateUser({
-      username: input.username,
-      email: input.email,
-      password: input.password,
-    });
+    const updateObj = {};
+    if (input.username !== userData.username)
+      updateObj.username = input.username;
+    if (input.email !== userData.email) updateObj.email = input.email;
+    if (input.password) updateObj.password = input.password;
+    if (Object.keys(updateObj).length) {
+      updateUser({
+        ...updateObj,
+      });
+    }
   };
 
   const handleChange = (field) => (e) => {
@@ -126,12 +130,23 @@ export const ProfileSettings = () => {
   const handleOpenSnackBar = () => setOpenSnackBar(true);
   const handleCloseSnackBar = () => setOpenSnackBar(false);
 
+  useEffect(() => {
+    if (userData)
+      setInput((state) => ({
+        ...state,
+        username: userData.username,
+        email: userData.email,
+      }));
+  }, [userData]);
+
   return (
     <>
-        <Typography variant="h4" align="center" sx={{mt: "2rem"}}>Update my profile</Typography>
+      <Typography variant="h4" align="center" sx={{ mt: "2rem" }}>
+        Update my profile
+      </Typography>
       <Box
         component="form"
-        onSubmit={(e) => handleUpdatedUser(e)}
+        onSubmit={(e) => handleUpdateUser(e)}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -159,7 +174,8 @@ export const ProfileSettings = () => {
             endAdornment: (
               <InputAdornment position="end">
                 {input.email ? (
-                  !emailExists && input.emailValid ? (
+                  (!emailExists && input.emailValid) ||
+                  input.email === userData.email ? (
                     <DoneIcon color="success" />
                   ) : (
                     <Tooltip title="Email already in use">

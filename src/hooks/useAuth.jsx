@@ -9,28 +9,28 @@ export const useAuth = () => {
   const location = useLocation();
   const setUserData = useUserData((state) => state.setUserData);
   const [errorAlert, setErrorAlert] = useState({ show: false, message: "" });
-  const { isLoading: authLoading, data: token } = useQuery(
-    ["auth"],
-    async () => (await axiosClient.get("/auth")).data,
-    {
-      cacheTime: 0,
-      retry: false,
-      onSuccess: (data) => {
-        setUserData(data);
-        if (!data) navigate("/");
-        else if (location.pathname === "/") navigate("/feed");
-      },
-      onError: (error) => {
-        if (error.response.data)
-          setErrorAlert({ show: true, message: error.response.data.message });
-        else
-          setErrorAlert({
-            show: true,
-            message: "Ooops an error has occurred please try again later",
-          });
-      },
-    }
-  );
+  const {
+    isLoading: authLoading,
+    data: token,
+    refetch: refetchAuth,
+  } = useQuery(["auth"], async () => (await axiosClient.get("/auth")).data, {
+    cacheTime: 0,
+    retry: false,
+    onSuccess: (data) => {
+      setUserData(data.userData);
+      if (!data) navigate("/");
+      else if (location.pathname === "/") navigate("/feed");
+    },
+    onError: (error) => {
+      if (error.response.data)
+        setErrorAlert({ show: true, message: error.response.data.message });
+      else
+        setErrorAlert({
+          show: true,
+          message: "Ooops an error has occurred please try again later",
+        });
+    },
+  });
   const { refetch: logout, isLoading: logoutLoading } = useQuery(
     ["logout"],
     async () => (await axiosClient.get("/auth/signout")).data,
@@ -60,5 +60,6 @@ export const useAuth = () => {
     logout,
     errorAlert,
     closeErrorAlert,
+    refetchAuth,
   };
 };

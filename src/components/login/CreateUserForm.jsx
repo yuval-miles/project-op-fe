@@ -158,11 +158,17 @@ export const CreateUserForm = ({ handleOpenSnackBar, setShowLogin }) => {
             input={input}
             setInput={setInput}
             handleChange={handleChange}
+            required
           />
           <Collapse in={input.showError}>
             <Alert severity="error">{input.errorMessage}</Alert>
           </Collapse>
-          <Button type="submit" className="btnHome" variant="contained" sx={{bgcolor:"blueviolet"}}>
+          <Button
+            type="submit"
+            className="btnHome"
+            variant="contained"
+            sx={{ bgcolor: "blueviolet" }}
+          >
             Create Account
           </Button>
         </Stack>
