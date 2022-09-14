@@ -4,12 +4,12 @@ import { InputAdornment, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 
-const PasswordFields = ({ input, setInput, handleChange}) => {
+const PasswordFields = ({ input, setInput, handleChange, required }) => {
   return (
     <>
       <Stack>
         <TextField
-          required
+          required={!!required}
           type={input.showPassword ? "text" : "password"}
           label="Password"
           value={input.password}
@@ -50,10 +50,10 @@ const PasswordFields = ({ input, setInput, handleChange}) => {
           onChange={handleChange("password")}
         ></TextField>
         <TextField
-          required
-          error={!input.passwordsMatch && input.confirmPassword !== ""}
+          required={!!required}
+          error={!input.passwordsMatch && input.password !== ""}
           helperText={
-            !input.passwordsMatch && input.confirmPassword
+            !input.passwordsMatch && input.password
               ? "Passwords don't match"
               : ""
           }

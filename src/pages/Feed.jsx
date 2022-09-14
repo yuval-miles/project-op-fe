@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../utils/axiosClient";
 import { useAuth } from "../hooks/useAuth";
 import CreatePostModal from "../components/posts/CreatePostModal";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 
 const Feed = () => {
   const [openPostModal, setOpenPostModal] = useState(false);
@@ -20,7 +20,6 @@ const Feed = () => {
     async () => (await axiosClient.get("/posts")).data,
     {
       onSuccess: (data) => {
-        console.log(data.response);
         setPostsList(data.response.posts);
         setMyLikes(data.response.myLikesObj);
         setMyDislikes(data.response.myDislikesObj);
@@ -36,18 +35,25 @@ const Feed = () => {
   const handleClosePostModal = () => setOpenPostModal(false);
   return (
     <>
-    <Box sx={{display:"flex", justifyContent:"flex-end", alignItems:"center", mr:"2rem"}}>
-      <Button
-        className="btn"
-        onClick={() => handleOpenPostModal(true)}
-        variant="outlined"
-        size="large"
-        sx={{ color: "black", borderColor: "black"}}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          mr: "2rem",
+        }}
       >
-        <AddIcon sx={{mr:"0.5rem"}}/>
-        Add post
-      </Button>
-    </Box>
+        <Button
+          className="btn"
+          onClick={() => handleOpenPostModal(true)}
+          variant="outlined"
+          size="large"
+          sx={{ color: "black", borderColor: "black" }}
+        >
+          <AddIcon sx={{ mr: "0.5rem" }} />
+          Add post
+        </Button>
+      </Box>
       <CreatePostModal
         openPostModal={openPostModal}
         handleClosePostModal={handleClosePostModal}

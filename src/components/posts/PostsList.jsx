@@ -24,6 +24,8 @@ export default function PostsList({ postsList, myLikes, myDislikes }) {
             liked={!!myLikes[post.id]}
             disliked={!!myDislikes[post.id]}
             picture={post.picture}
+            postUser={post.user}
+            createdAt={post.createdAt}
           />
         ))}
       </Box>
