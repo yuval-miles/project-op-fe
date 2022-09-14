@@ -13,9 +13,6 @@ export default function NavBar({ handleOpenModal }) {
         sx={{ boxShadow: "0px 0px 0px 0px" }}
       >
         <Toolbar>
-          {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Menu />
-       </Typography> */}
           <Button
             className="btn"
             onClick={() => handleOpenModal(false)}

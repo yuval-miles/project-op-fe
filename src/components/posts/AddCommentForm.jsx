@@ -44,23 +44,7 @@ export default function AddCommentForm({ userId, postId, username }) {
   }, []);
   console.log(comments);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <TextareaAutosize
-        aria-label="minimum height"
-        minRows={3}
-        placeholder="comment..."
-        style={{ width: "100%", border: "none", resize: "none" }}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <Button
-        className="btn"
-        variant="outlined"
-        type="submit"
-        sx={{ width: "10%", ml: "auto", color: "black", borderColor: "black" }}
-        onClick={handleAddComment}
-      >
-        Add
-      </Button>
+    <Box sx={{ display: "flex", flexDirection: "column"}}>
       {comments ? (
         <>
           <Stack sx={{ overflowY: "auto", height: "280px" }}>
@@ -126,6 +110,22 @@ export default function AddCommentForm({ userId, postId, username }) {
       ) : (
         <></>
       )}
+      <TextareaAutosize
+        aria-label="minimum height"
+        minRows={3}
+        placeholder="comment..."
+        style={{ width: "100%", border: "none", resize: "none" }}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <Button
+        className="btn"
+        variant="outlined"
+        type="submit"
+        sx={{ width: "10%", ml: "auto", color: "black", borderColor: "black" }}
+        onClick={handleAddComment}
+      >
+        Add
+      </Button>
     </Box>
   );
 }
