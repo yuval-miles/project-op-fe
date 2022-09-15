@@ -124,6 +124,7 @@ const Post = ({
                       width: "3rem",
                       height: "3rem",
                       borderRadius: "50%",
+                      objectFit:"cover"
                     }}
                   />
                 </>
@@ -183,9 +184,9 @@ const Post = ({
             </Box>
             <Box>
               {picture ? (
-                <Box className="photo">
+                <Box>
                   {" "}
-                  <img src={picture} />
+                  <img className="photo" src={picture} />
                 </Box>
               ) : (
                 <Typography
